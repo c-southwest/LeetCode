@@ -1,30 +1,59 @@
 public class Solution
 {
-    public bool IsAnagram(string s, string t)
-    {
-        if (s.Length != t.Length) return false;
-        Dictionary<char, int> dic1 = new Dictionary<char, int>();
-        Dictionary<char, int> dic2 = new Dictionary<char, int>();
-        foreach (char c in s)
+    public bool IsAnagram_original(string s, string t) {
+        if (s.Length != t.Length)
         {
-            if (dic1.ContainsKey(c))
-                dic1[c] += 1;
-            else
-                dic1[c] = 0;
-        }
-        foreach (char c in t)
-        {
-            if (dic2.ContainsKey(c))
-                dic2[c] += 1;
-            else
-                dic2[c] = 0;
-        }
-        if (dic1.Count != dic2.Count)
             return false;
-        foreach (var item in dic1)
-        {
-            if (!dic2.Contains(item)) return false;
         }
+
+        int[] a1 = new int[26];
+        int[] a2 = new int[26];
+        for (int i = 0; i < s.Length; i++)
+        {
+            a1[s[i] - 'a']++;
+            a2[t[i] - 'a']++;
+        }
+
+        for (int i = 0; i < a1.Length; i++)
+        {
+            if (a1[i] != a2[i])
+            {
+                return false;
+            }
+        }
+
         return true;
+    }
+    
+    public bool IsAnagram(string s, string t) {
+        if (s.Length != t.Length)
+        {
+            return false;
+        }
+
+        int[] a = new int[26];
+        for (int i = 0; i < s.Length; i++)
+        {
+            a[s[i] - 'a']++;
+            a[t[i] - 'a']--;
+        }
+
+        for (int i = 0; i < a.Length; i++)
+        {
+            if (a[i] != 0)
+            {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    public static void Main()
+    {
+        var s = new Solution();
+        string argument = "anagram";
+        var r = s.IsAnagram(argument, "nagaram");
+        Console.WriteLine(r);
     }
 }
